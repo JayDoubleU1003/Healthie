@@ -73,16 +73,19 @@ def CheckLogin():
  
     if nameEL.get() == uname and pwordEL.get() == pword: # Checks to see if you entered the correct data.
         r = Tk() # Opens new window
-        r.title(':D')
-        r.geometry('150x50') # Makes the window a certain size
-        rlbl = Label(r, text='\n[+] Logged In') # "logged in" label
-        rlbl.pack() 
+        r.title("XD")
+        r.geometry("200x75") # Makes the window a certain size
+        rlbl = Label(r, text = "\n[+] Logged In") # "logged in" label
+        rlbl.pack()
+        continue_Button = Button(r, text = "Continue into app")#, command = Processes_Module.Main_window) 
+        continue_Button.grid(row = 1, column = 1)
         r.mainloop()
+    
     else:
         r = Tk()
-        r.title('D:')
-        r.geometry('150x50')
-        rlbl = Label(r, text='\n[!] Invalid Login')
+        r.title("D:")
+        r.geometry("150x50")
+        rlbl = Label(r, text="\n[!] Invalid Login")
         rlbl.pack()
         r.mainloop()
  
