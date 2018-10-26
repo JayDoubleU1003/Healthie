@@ -1,6 +1,7 @@
 from tkinter import *
 import os
- 
+import Processes_Module
+
 creds = "tempfile.temp" 
  
 def Signup(): # This is the signup definition, 
@@ -28,14 +29,28 @@ def Signup(): # This is the signup definition,
     rootsignup.mainloop() # This just makes the window keep open, we will destroy it soon
  
 def FSSignup():
-    with open(creds, 'w') as f: # Creates a document using the variable we made at the top.
-        f.write(nameE.get()) # nameE is the variable we were storing the input to. Tkinter makes us use .get() to get the actual string.
-        f.write('\n') # Splits the line so both variables are on different lines.
-        f.write(pwordE.get()) # Same as nameE just with pword var
-        f.close() # Closes the file
- 
-    rootsignup.destroy() # This will destroy the signup window. :)
-    Login() # This will move us onto the login definition :D
+  if nameE.get() != "" and pwordE.get() != "":   
+      with open(creds, 'w') as f: # Creates a document using the variable we made at the top.
+            f.write(nameE.get()) # nameE is the variable we were storing the input to. Tkinter makes us use .get() to get the actual string.
+            f.write('\n') # Splits the line so both variables are on different lines.
+            f.write(pwordE.get()) # Same as nameE just with pword var
+            f.close() # Closes the file
+    
+            rootsignup.destroy() # This will destroy the signup window. :)
+            Login() # This will move us onto the login definition :D
+  
+  else:
+      signupagain = Tk() #creates a new window when sign up informations are not provided. 
+      signupagain.title("Signup failed")
+      signup_fail = Label(signupagain, text = "Please fill in required info\n", fg = "red")
+      signupagain.geometry("250x75")
+      signup_fail.pack()
+      
+      signupa_B = Button(signupagain, text = "Sign up again", command = signupagain.destroy)
+      signupa_B.pack()
+      
+      signupagain.mainloop()
+    
  
 def Login():
     global nameEL
@@ -48,8 +63,8 @@ def Login():
     intruction = Label(rootA, text="Please Login\n") # More labels to tell us what they do
     intruction.grid(sticky=E) # Blahdy Blah
  
-    nameL = Label(rootA, text='Username: ') # More labels
-    pwordL = Label(rootA, text='Password: ') # ^
+    nameL = Label(rootA, text="Username: ") # More labels
+    pwordL = Label(rootA, text="Password: ") # ^
     nameL.grid(row=1, sticky=W)
     pwordL.grid(row=2, sticky=W)
  
@@ -57,7 +72,7 @@ def Login():
     pwordEL = Entry(rootA, show='*')
     nameEL.grid(row=1, column=1)
     pwordEL.grid(row=2, column=1)
- 
+    
     loginB = Button(rootA, text='Login', command=CheckLogin) # This makes the login button, which will go to the CheckLogin def.
     loginB.grid(columnspan=2, sticky=W)
  
@@ -77,10 +92,10 @@ def CheckLogin():
         r.geometry("200x75") # Makes the window a certain size
         rlbl = Label(r, text = "\n[+] Logged In") # "logged in" label
         rlbl.pack()
-        continue_Button = Button(r, text = "Continue into app")#, command = Processes_Module.Main_window) 
-        continue_Button.grid(row = 1, column = 1)
+        continue_Button = Button(r, text = "Continue into app", command = Processes_Module.Main_window) 
+        continue_Button.pack()
+
         r.mainloop()
-    
     else:
         r = Tk()
         r.title("D:")
