@@ -94,7 +94,7 @@ def DelUser():
     rootA.destroy() # Destroys the login window
     Signup() # And goes back to the start!
  
-if os.path.isfile(creds):
-    Login()
-else: # This if else statement checks to see if the file exists. If it does it will go to Login, if not it will go to Signup :)
-    Signup()
+#if os.path.isfile(creds):
+#    Login()
+#else: # This if else statement checks to see if the file exists. If it does it will go to Login, if not it will go to Signup :)
+#    Signup()
