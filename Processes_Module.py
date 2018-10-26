@@ -1,3 +1,6 @@
+import Login_Module
+
+
 def BMI_Calculator (height, mass):
     global BMI
     BMI = mass/(height*height)
@@ -24,6 +27,7 @@ def Defining_Health_Range (BMI):
     fileX.close
     
 def Main_window():
+    r.destroy()
     print("Health Monitor") 
     x = input("Press 'Enter' to start recording body mass index, enter 'x' to end program: ")
 
