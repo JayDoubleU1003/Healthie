@@ -22,13 +22,25 @@ def add_new_user(newusername, newpassword):
     f = open(usernamelist, "w")
     f.write("{}".format(existing_accounts))
 
-#def check_username(newusername):
-#    existing_accounts = check_file(usernamelist)
+def check_username(newusername):
+    existing_accounts = check_file(usernamelist)
+    create = True
 
+    for account in existing_accounts:
+        if newusername == account["username"]:
+            create = False
+            print("Username has been taken")
+            break
+        else:
+            continue
+    
+    if create: 
+        #create_file(usersavefile)
+        add_new_user(username, password)
 
 try:
     check_file(usernamelist)
-    add_new_user(username, password)
+    check_username(username)   
 except:
     create_file(usernamelist)
     add_new_user(username, password)
