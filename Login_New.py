@@ -13,24 +13,24 @@ def Signup(): # This is the signup definition,
     global rootsignup
  
     rootsignup = Tk() # This creates the window, just a blank one.
-    rootsignup.title("Sign Up") # This renames the title of said window to 'signup'
+    rootsignup.title("Sign Up") # This renames the title of said window to "signup"
     rootsignup.geometry(SIZE)
-    intruction = Label(rootsignup, text="Please Enter new Username and password\n", font = HEADING) # This puts a label, so just a piece of text saying 'please enter blah'
-    intruction.grid(row=0, columnspan=5,) # This just puts it in the window, on row 0, col 0. If you want to learn more look up a tkinter tutorial :)
+    intruction = Label(rootsignup, text="Please Enter new Username and password\n", font = HEADING) 
+    intruction.grid(row=0, columnspan=5,) 
  
-    nameL = Label(rootsignup, text="New Username: ") # This just does the same as above, instead with the text new username.
-    pwordL = Label(rootsignup, text="New Password: ") # ^^
-    nameL.grid(row=1, column=0, sticky=W) # Same thing as the instruction var just on different rows. :) Tkinter is like that.
-    pwordL.grid(row=2, column=0, sticky=W) # ^^
+    nameL = Label(rootsignup, text="New Username: ") 
+    pwordL = Label(rootsignup, text="New Password: ") 
+    nameL.grid(row=1, column=0, sticky=W) 
+    pwordL.grid(row=2, column=0, sticky=W) 
  
     nameE = Entry(rootsignup) # This now puts a text box waiting for input.
-    pwordE = Entry(rootsignup, show="*") # Same as above, yet 'show="*"' What this does is replace the text with *, like a password box :D
-    nameE.grid(row=1, column=1, sticky = W) # You know what this does now :D
-    pwordE.grid(row=2, column=1, sticky = W) # ^^
+    pwordE = Entry(rootsignup, show="*") 
+    nameE.grid(row=1, column=1, sticky = W) 
+    pwordE.grid(row=2, column=1, sticky = W) 
  
     signupButton = Button(rootsignup, text="Sign up", command=check_username) 
     signupButton.grid(columnspan=2, sticky=W)
-    rootsignup.mainloop() # This just makes the window keep open, we will destroy it soon
+    rootsignup.mainloop() 
  
 def create_file(file_name):
     with open(file_name, "w") as f:
@@ -67,8 +67,8 @@ def check_username():
         add_new_user(nameE.get(), pwordE.get())
         usersavefile = r"accounts\\" + nameE.get() + ".txt"
         create_file(usersavefile)
-        rootsignup.destroy() # This will destroy the signup window. :)
-        Login() # This will move us onto the login definition :D
+        rootsignup.destroy() 
+        Login() 
   
     else:
       signupagain = Tk() #creates a new window when sign up informations are not provided. 
@@ -88,29 +88,29 @@ def Login():
     global pwordEL 
     global rootA
 
-    rootA = Tk() # This now makes a new window.
-    rootA.title("Login") # This makes the window title 'login'
+    rootA = Tk() 
+    rootA.title("Login") 
     rootA.geometry(SIZE)
-    intruction = Label(rootA, text="Please Login\n") # More labels to tell us what they do
-    intruction.grid(sticky=E) # Blahdy Blah
+    intruction = Label(rootA, text="Please Login\n") 
+    intruction.grid(sticky=E) 
  
-    nameL = Label(rootA, text="Username: ") # More labels
-    pwordL = Label(rootA, text="Password: ") # ^
+    nameL = Label(rootA, text="Username: ") 
+    pwordL = Label(rootA, text="Password: ") 
     nameL.grid(row=1, sticky=W)
     pwordL.grid(row=2, sticky=W)
  
-    nameEL = Entry(rootA) # The entry input
+    nameEL = Entry(rootA) 
     pwordEL = Entry(rootA, show="*")
     nameEL.grid(row=1, column=1)
     pwordEL.grid(row=2, column=1)
     
-    loginB = Button(rootA, text="Login", command=CheckLogin) # This makes the login button, which will go to the CheckLogin def.
+    loginB = Button(rootA, text="Login", command=CheckLogin) 
     loginB.grid(row=3, sticky=W)#,columnspan=2)
  
     newsignup = Button(rootA, text="Create new user account", command=New_Signup)
     newsignup.grid(row=4, sticky=W, columnspan=2)
     
-    rmuser = Button(rootA, text = "Delete User", fg = "red", command = DelUser) # This makes the deluser button. blah go to the deluser def.
+    rmuser = Button(rootA, text = "Delete User", fg = "red")#, command = DelUser) 
     rmuser.grid(row=5, columnspan=2, sticky=W)
     
     
@@ -148,12 +148,12 @@ def CheckLogin():
         loginButton.pack(side = LEFT)
         r.mainloop()
  
-def DelUser():
-    os.remove(creds) # Removes the file
-    rootA.destroy() # Destroys the login window
-    Signup() # And goes back to the start!
+#def DelUser():
+#    os.remove(creds) 
+#    rootA.destroy() 
+#    Signup() 
  
 #if os.path.isfile(creds):
 #    Login()
 #else: # This if else statement checks to see if the file exists. If it does it will go to Login, if not it will go to Signup :)
-#    Signup()" 
+#    Signup()"
