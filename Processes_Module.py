@@ -27,8 +27,6 @@ def Defining_Health_Range (BMI):
     fileX.close
     
 def Main_window():
-    Login_New.rootA.destroy()
-    Login_New.r.destroy()
     print("Health Monitor") 
     x = input("Press 'Enter' to start recording body mass index, enter 'x' to end program: ")
 
