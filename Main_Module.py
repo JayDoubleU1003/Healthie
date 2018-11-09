@@ -161,7 +161,7 @@ class Application(Tk):
 
         self.frames = {}
 
-        for F in (Homepage, BMI_Page):#, Records):
+        for F in (Homepage, BMI_Page, Records):
             frame = F(container, self)
             self.frames[F] = frame
             frame.place(x=0, y=0, relheight=1, relwidth=1)
@@ -182,11 +182,13 @@ class Homepage(Frame):
 #       label.pack(pady=10,padx=10)
         welcome_text = "Welcome " + nameEL.get()
 
-        heading1 = Label(self, text = welcome_text, font = HEADING)
+        heading1 = Label(self, text=welcome_text, font=HEADING)
         heading1.pack() 
         
-        BmiButton = Button(self, text = "Begin inputting data for BMI", command = lambda : controller.show_frame(BMI_Page))
+        BmiButton = Button(self, text="Begin inputting data for BMI", command=lambda : controller.show_frame(BMI_Page))
         BmiButton.pack()
+        RecordsButton = Button(self, text="Previous records", command=lambda : controller.show_frame(Records))
+        RecordsButton.pack()
 
 
 class BMI_Page(Frame):
@@ -213,19 +215,35 @@ class BMI_Page(Frame):
 
         calculate_button = Button(self, text="Calculate now")#, command=)
         button.grid(row=3, column=1)
+        MenuButton = Button(self, text="Back to menu", command=lambda : controller.show_frame(Homepage))
+        MenuButton.grid(row=3, column=1)
+        RecordsButton = Button(self, text="Previous records", command=lambda : controller.show_frame(Records))
+        RecordsButton.pack()
 
-        
+class Records(Frame):
+    def __init__(self, parent, controller):
+        Frame.__init__(self, parent)
 
+        self.controller = controller
 
-        
+        heading = Label(self, text="Your previous records", font=HEADING)
+        heading.pack()
 
+        container = Frame(self)
+        container.pack()
 
+        self.message_var = StringVar()
+        message = Label(container, textvariable=self.message_var)
+        message.grid(row=0, column=0)
 
-try:
-    check_file(usernamelist)
-    Login()   
-except:
-    create_file(usernamelist)
-    Signup()
+        username = nameEL.get()
+        filename = format_text(username)
+        previous_records = read_records(filename)
+        self.message_var.set(previous_records)
+
+        BmiButton = Button(self, text="Begin inputting data for BMI", command=lambda : controller.show_frame(BMI_Page))
+        BmiButton.pack()
+        MenuButton = Button(self, text="Back to menu", command=lambda : controller.show_frame(Homepage))
+        MenuButton.pack()
     
 #Processes_Module.Main_window()
