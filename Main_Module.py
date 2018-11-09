@@ -4,9 +4,9 @@ from tkinter import *
 #import User_Input_Module 
 
 usernamelist = r"usernamelist.txt" #"tempfile.temp"  
-HEADING = "TimesNewRoman 12 bold"
+HEADING = "TimesNewRoman 14 bold"
 SMALL = "150x150"
-NORMAL = "400x400"
+NORMAL = "450x400"
 BIG = "800x725"
 
 def Signup():  
@@ -18,20 +18,20 @@ def Signup():
     rootsignup.title("Sign Up") 
     rootsignup.geometry(NORMAL)
     intruction = Label(rootsignup, text="Please Enter new Username and password\n", font = HEADING) 
-    intruction.grid(row=0, columnspan=5,) 
+    intruction.place(x=30, y=50) 
  
     nameL = Label(rootsignup, text="New Username: ") 
     pwordL = Label(rootsignup, text="New Password: ") 
-    nameL.grid(row=1, column=0, sticky=W) 
-    pwordL.grid(row=2, column=0, sticky=W) 
+    nameL.place(x=70, y=100) 
+    pwordL.place(x=73, y=125) 
  
     nameE = Entry(rootsignup) 
     pwordE = Entry(rootsignup, show="*") 
-    nameE.grid(row=1, column=1, sticky = W) 
-    pwordE.grid(row=2, column=1, sticky = W) 
+    nameE.place(x=158, y=101) 
+    pwordE.place(x=158, y=126) 
  
     signupButton = Button(rootsignup, text="Sign up", command=check_username) 
-    signupButton.grid(columnspan=2, sticky=W)
+    signupButton.place(x=158, y=160)
     rootsignup.mainloop()
 
 def check_username():
@@ -72,26 +72,29 @@ def Login():
     global rootA
 
     rootA = Tk() 
+    
     rootA.title("Login") 
     rootA.geometry(NORMAL)
-    intruction = Label(rootA, text="Please Login\n") 
-    intruction.grid(sticky=E) 
+    intruction = Label(rootA, text="Please Login\n", font=HEADING) 
+    intruction.pack(side=TOP)
+    frame1 = Frame(rootA)
+    frame1.pack() 
  
-    nameL = Label(rootA, text="Username: ") 
-    pwordL = Label(rootA, text="Password: ") 
-    nameL.grid(row=1, sticky=W)
-    pwordL.grid(row=2, sticky=W)
+    nameL = Label(frame1, text="Username: ") 
+    pwordL = Label(frame1, text="Password: ") 
+    nameL.grid(row=0, column=0, sticky=E)
+    pwordL.grid(row=1, column=0, sticky=E)
  
-    nameEL = Entry(rootA) 
-    pwordEL = Entry(rootA, show="*")
-    nameEL.grid(row=1, column=1)
-    pwordEL.grid(row=2, column=1)
+    nameEL = Entry(frame1) 
+    pwordEL = Entry(frame1, show="*")
+    nameEL.grid(row=0, column=1, sticky=W)
+    pwordEL.grid(row=1, column=1, sticky=W)
     
     loginB = Button(rootA, text="Login", command=to_CheckLogin) 
-    loginB.grid(row=3, sticky=W)#,columnspan=2)
+    loginB.pack()
  
     newsignup = Button(rootA, text="Create new user account", command=New_Signup)
-    newsignup.grid(row=4, sticky=W, columnspan=2)
+    newsignup.pack()
     
 #    rmuser = Button(rootA, text = "Delete User", fg = "red")#, command = DelUser) 
 #    rmuser.grid(row=5, columnspan=2, sticky=W)
@@ -103,13 +106,13 @@ def to_CheckLogin():
     CheckLogin(nameEL.get(), pwordEL.get())
 
 def to_application():
-    username = nameEL.get()
     r.destroy()
+    username = nameEL.get()
     Application(username).mainloop()
 
 def CheckLogin(nameEL, pwordEL):
     global r
-    
+
     authorized = login(nameEL, pwordEL)
     username = nameEL  
 
@@ -130,9 +133,15 @@ def CheckLogin(nameEL, pwordEL):
         r.geometry(SMALL)
         rlbl = Label(r, text="\n[!] Invalid Login")
         rlbl.pack()
-        loginButton = Button(r, text = "Login again", command = Login)
+        loginButton = Button(r, text = "Login again", command = Login_again)
         loginButton.pack(side = LEFT)
         r.mainloop()
+
+def Login_again():
+    r.destroy()
+    Login()
+
+
 
 def New_Signup():
     rootA.destroy()
@@ -152,27 +161,27 @@ class Application(Tk):
 
         self.frames = {}
 
-        for F in (Homepage, BMI_Page):
+        for F in (Homepage, BMI_Page):#, Records):
             frame = F(container, self)
             self.frames[F] = frame
-            frame.grid(row=0, column=0, sticky="nsew")
+            frame.place(x=0, y=0, relheight=1, relwidth=1)
         self.show_frame(Homepage)
 
         
     def show_frame(self, cont):
-        
         frame = self.frames[cont]
         frame.tkraise()
   
         
 class Homepage(Frame):  
-
     def __init__(self, parent, controller):
         Frame.__init__(self, parent)
 
+        self.controller = controller
 #       label = tk.Label(self, text="Homepage", font=HEADING)
 #       label.pack(pady=10,padx=10)
         welcome_text = "Welcome " + nameEL.get()
+
         heading1 = Label(self, text = welcome_text, font = HEADING)
         heading1.pack() 
         
@@ -181,18 +190,31 @@ class Homepage(Frame):
 
 
 class BMI_Page(Frame):
-
-    def __init___(self, parent, controller):
+    def __init__(self, parent, controller):
         Frame.__init__(self, parent)
-        heading = Label(self, text = "BMI Calculator", font = HEADING)
-        heading.grid(row = 0, columnspan = 3, sticky = E)
+        
+        self.controller = controller
+        
+        heading = Label(self, text="BMI Calculator", font=HEADING)
+        heading.grid(row=0, column=0)
+        
+#        container = Frame(self)
+#        container.pack()
 
-        heightlabel = Label(self, text = "Height")
-        heightlabel.grid(row = 2, column = 0)
+        heightlabel = Label(self, text="Height")
+        heightlabel.grid(row=1, column=0)
+        masslabel = Label(self, text="Mass")
+        masslabel.grid(row=2, column=0)
 
-        masslabel = Label(self, text = "Mass")
-        masslabel.grid(row = 3, column = 0)
+        heightentry = Entry(self)
+        heightentry.grid(row=1, column=1)
+        massentry = Entry(self)
+        massentry.grid(row=2, column=1)
 
+        calculate_button = Button(self, text="Calculate now")#, command=)
+        button.grid(row=3, column=1)
+
+        
 
 
         
