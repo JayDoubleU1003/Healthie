@@ -1,6 +1,7 @@
 from Processes_Module import * 
 from Login_New import *
 from tkinter import *
+import os
 #import User_Input_Module 
 
 usernamelist = r"usernamelist.txt" #"tempfile.temp"  
@@ -36,35 +37,54 @@ def Signup():
 
 def check_username():
     newusername = nameE.get()
+    newpassword = pwordE.get()
     existing_accounts = check_file(usernamelist)
     create = True
 
     for account in existing_accounts:
         if newusername == account["Username"]:
             create = False
-            print("Username has been taken")
+            error = Tk()
+            error.title("Signup failed")
+            usernametakenL = Label(error, text="Username has been taken\n", fg="red")
+            usernametakenL.pack()
+                
+            signupa_B = Button(error, text="Sign up again", command=error.destroy)
+            signupa_B.pack()
+                
             break
         else:
             continue
-        
-    if create:
-        add_new_user(nameE.get(), pwordE.get())
-        usersavefile = format_text(newusername)
-        create_file(usersavefile)
-        rootsignup.destroy() 
-        Login() 
-  
-    else:
+            
+    if newusername == "" or newpassword == "":
         signupagain = Tk() #creates a new window when sign up informations are not provided. 
         signupagain.title("Signup failed")
-        signup_fail = Label(signupagain, text = "Please fill in required info\n", fg = "red")
+        signup_fail = Label(signupagain, text="Please fill in required info\n", fg="red")
         signupagain.geometry(SMALL)
         signup_fail.pack()
-            
-        signupa_B = Button(signupagain, text = "Sign up again", command = signupagain.destroy)
+                    
+        signupa_B = Button(signupagain, text="Sign up again", command=signupagain.destroy)
         signupa_B.pack()
-            
+                    
         signupagain.mainloop()
+    
+    elif create:
+        add_new_user(newusername, newpassword)
+        usersavefile = format_text(newusername)
+        create_save_file(usersavefile)
+        rootsignup.destroy() 
+        Login() 
+    
+        
+    
+#    except:
+#        newusername = nameE.get()
+#        create_file(usernamelist)
+#        create_file(format_text)
+#        add_new_user(nameE.get(), pwordE.get())
+#        usersavefile = format_text(newusername)
+#        create_save_file(usersavefile)
+    
 
 def Login():
     global nameEL
@@ -152,7 +172,7 @@ class Application(Tk):
         Tk.__init__(self)
 
         self.title("Healthie")
-        self.geometry(BIG)
+        self.geometry(NORMAL)
         self.user = user
 
         container = Frame(self)
@@ -180,7 +200,7 @@ class Homepage(Frame):
         self.controller = controller
 #       label = tk.Label(self, text="Homepage", font=HEADING)
 #       label.pack(pady=10,padx=10)
-        welcome_text = "Welcome " + nameEL.get()
+        welcome_text = "Welcome \"" + nameEL.get() + "\""
 
         heading1 = Label(self, text=welcome_text, font=HEADING)
         heading1.pack() 
@@ -198,27 +218,27 @@ class BMI_Page(Frame):
         self.controller = controller
         
         heading = Label(self, text="BMI Calculator", font=HEADING)
-        heading.grid(row=0, column=0)
+        heading.pack()
         
-#        container = Frame(self)
-#        container.pack()
+        container = Frame(self)
+        container.pack()
 
-        heightlabel = Label(self, text="Height")
-        heightlabel.grid(row=1, column=0)
-        masslabel = Label(self, text="Mass")
-        masslabel.grid(row=2, column=0)
+        heightlabel = Label(container, text="Height")
+        heightlabel.grid(row=0, column=0)
+        masslabel = Label(container, text="Mass")
+        masslabel.grid(row=1, column=0)
 
-        heightentry = Entry(self)
-        heightentry.grid(row=1, column=1)
-        massentry = Entry(self)
-        massentry.grid(row=2, column=1)
+        heightentry = Entry(container)
+        heightentry.grid(row=0, column=1)
+        massentry = Entry(container)
+        massentry.grid(row=1, column=1)
 
-        calculate_button = Button(self, text="Calculate now")#, command=)
-        button.grid(row=3, column=1)
-        MenuButton = Button(self, text="Back to menu", command=lambda : controller.show_frame(Homepage))
-        MenuButton.grid(row=3, column=1)
-        RecordsButton = Button(self, text="Previous records", command=lambda : controller.show_frame(Records))
-        RecordsButton.pack()
+        calculate_button = Button(container, text="Calculate now")#, command=)
+        calculate_button.grid(row=2, column=1)
+        Menu_Button = Button(container, text="Back to menu", command=lambda : controller.show_frame(Homepage))
+        Menu_Button.grid(row=3, column=1)
+        Records_Button = Button(container, text="Previous records", command=lambda : controller.show_frame(Records))
+        Records_Button.grid(row=4, column=1)
 
 class Records(Frame):
     def __init__(self, parent, controller):
@@ -245,5 +265,23 @@ class Records(Frame):
         BmiButton.pack()
         MenuButton = Button(self, text="Back to menu", command=lambda : controller.show_frame(Homepage))
         MenuButton.pack()
+
+
+
+
+
+        
+
+
+        
+
+
+
+try:
+    check_file(usernamelist)
+    Login()   
+except:
+    create_file(usernamelist)
+    Signup()
     
 #Processes_Module.Main_window()
