@@ -9,6 +9,25 @@ def create_file(file_name):
     with open(file_name, "w") as f:
         f.write("[]")
 
+
+def create_save_file(file_name):
+        try :
+                check_file(file_name)
+                with open(file_name, "w") as f:
+                        f.write("")
+
+        except:
+                try:
+                        os.mkdir("accounts")
+                        with open(file_name, "w") as f:
+                                f.write("") 
+                except:
+                        with open(file_name, "w") as f:
+                                f.write("")
+
+
+
+
 def check_file(file_name):
     with open(file_name, "r") as pull_file:
         f = eval(pull_file.read())
