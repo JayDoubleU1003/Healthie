@@ -11,6 +11,8 @@ def create_file(file_name):
 
 
 def create_save_file(file_name):
+        first_line = "BMI" + "\t" + "Blood Pressure" + "\t" + "Date"
+
         try :
                 check_file(file_name)
                 with open(file_name, "w") as f:
@@ -19,12 +21,11 @@ def create_save_file(file_name):
         except:
                 try:
                         os.mkdir("accounts")
-                        with open(file_name, "w") as f:
-                                f.write("") 
+                        with open(file_name, "w") as f: 
+                                f.write(first_line) 
                 except:
                         with open(file_name, "w") as f:
-                                f.write("")
-
+                                f.write(first_line)
 
 
 
