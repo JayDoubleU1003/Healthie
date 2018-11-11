@@ -2,6 +2,7 @@ from Processes_Module import *
 from Login_New import *
 from tkinter import *
 import os
+import datetime
 #import User_Input_Module 
 
 usernamelist = r"usernamelist.txt" #"tempfile.temp"  
@@ -125,9 +126,9 @@ def Login():
 def to_CheckLogin():
     CheckLogin(nameEL.get(), pwordEL.get())
 
-def to_application():
-    r.destroy()
-    username = nameEL.get()
+def to_application(username):
+#    r.destroy()
+#    username = nameEL.get()
     Application(username).mainloop()
 
 def CheckLogin(nameEL, pwordEL):
@@ -137,14 +138,16 @@ def CheckLogin(nameEL, pwordEL):
     username = nameEL  
 
     if authorized:
-            r = Tk() 
-            r.title("XD")
-            r.geometry(SMALL) 
-            rlbl = Label(r, text = "\n[+] Logged In") 
-            rlbl.pack()
-            continue_Button = Button(r, text = "Continue into app", command = to_application)#, command = Processes_Module.Main_window) 
-            continue_Button.pack()
-            r.mainloop()
+        to_application(username)
+        
+#            r = Tk() 
+#            r.title("XD")
+#            r.geometry(SMALL) 
+#            rlbl = Label(r, text = "\n[+] Logged In") 
+#            rlbl.pack()
+#            continue_Button = Button(r, text = "Continue into app", command = to_application)#, command = Processes_Module.Main_window) 
+#            continue_Button.pack()
+#            r.mainloop()
         
     else:
         rootA.destroy()
@@ -154,7 +157,7 @@ def CheckLogin(nameEL, pwordEL):
         rlbl = Label(r, text="\n[!] Invalid Login")
         rlbl.pack()
         loginButton = Button(r, text = "Login again", command = Login_again)
-        loginButton.pack(side = LEFT)
+        loginButton.pack()
         r.mainloop()
 
 def Login_again():
@@ -205,7 +208,7 @@ class Homepage(Frame):
         heading1 = Label(self, text=welcome_text, font=HEADING)
         heading1.pack() 
         
-        BmiButton = Button(self, text="Begin inputting data for BMI", command=lambda : controller.show_frame(BMI_Page))
+        BmiButton = Button(self, text="Begin inputting data for BMI and blood pressure", command=lambda : controller.show_frame(BMI_Page))
         BmiButton.pack()
         RecordsButton = Button(self, text="Previous records", command=lambda : controller.show_frame(Records))
         RecordsButton.pack()
@@ -217,7 +220,7 @@ class BMI_Page(Frame):
         
         self.controller = controller
         
-        heading = Label(self, text="BMI Calculator", font=HEADING)
+        heading = Label(self, text="BMI & Blood pressure", font=HEADING)
         heading.pack()
         
         container = Frame(self)
@@ -227,14 +230,32 @@ class BMI_Page(Frame):
         heightlabel.grid(row=0, column=0)
         masslabel = Label(container, text="Mass")
         masslabel.grid(row=1, column=0)
+        bp_label = Label(container, text="Blood pressure")
+        bp_label.grid(row=2, column=0)
 
         heightentry = Entry(container)
         heightentry.grid(row=0, column=1)
         massentry = Entry(container)
         massentry.grid(row=1, column=1)
+        bp_entry = Entry(container)
+        bp_entry.grid(row=2, column=1)
 
-        calculate_button = Button(container, text="Calculate now")#, command=)
-        calculate_button.grid(row=2, column=1)
+        calculate_button = Button(container, text="Calculate now")#, command=lambda : BMI_Calculator(heightentry.get(), massentry.get()))
+        calculate_button.grid(row=3, column=1)
+
+
+        heightVar = IntVar()
+        massVar = IntVar()
+        heightVar = heightentry.get()
+        massVar = massentry.get()
+        BMI = BMI_Calculator(heightVar, massVar)
+        date = datetime.date.today().strftime("%d %b %Y")
+        username = nameEL.get()
+        savefile = format_text(username)
+        write_records(username, BMI, date)
+
+
+
         Menu_Button = Button(container, text="Back to menu", command=lambda : controller.show_frame(Homepage))
         Menu_Button.grid(row=3, column=1)
         Records_Button = Button(container, text="Previous records", command=lambda : controller.show_frame(Records))
@@ -265,6 +286,8 @@ class Records(Frame):
         BmiButton.pack()
         MenuButton = Button(self, text="Back to menu", command=lambda : controller.show_frame(Homepage))
         MenuButton.pack()
+
+        
 
 
 
