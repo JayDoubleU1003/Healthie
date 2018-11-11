@@ -1,15 +1,14 @@
-import Login_New
-
+#import Login_New
+import webbrowser
 
 def BMI_Calculator (height, mass):
     global BMI
-    BMI = mass/(height*height)
+    BMI = float(mass)/float(height)*float(height)
     print("{:.1f}".format(BMI))
     return BMI
 
-
 def Defining_Health_Range (BMI):
-    fileX = open(r"C:\Users\Jw Lim\Python\Swinburne\BMI.txt", "r")
+    fileX = open("BMI.txt", "r")
     
     if BMI < 18.5:
         print(fileX.readlines()[1])
@@ -26,15 +25,14 @@ def Defining_Health_Range (BMI):
     
     fileX.close
     
-def Main_window():
-    print("Health Monitor") 
-    x = input("Press 'Enter' to start recording body mass index, enter 'x' to end program: ")
+def search_online():
+    q = input("What do you want?: ")
+    search = "http://www.google.com/search?hl=en&q=" + q
+    webbrowser.open(search)
 
-    if x == "": 
-        height = float(input("Enter your height in meters: "))
-        mass = float(input("Enter your mass in Kg: "))
-        BMI_Calculator(height, mass)
-        Defining_Health_Range(BMI) #calls Defining_Health_Range function from Processes_Module
+def read_records(filename):
+    with open(filename, "r") as records:
+        return records.read()
 
-    elif x.lower() == "x": 
-        print("Alright. This program ends here")
+def write_records(username, BMI, Date):
+    record_text = BMI + "\t" + Date
