@@ -170,6 +170,8 @@ def New_Signup():
     rootA.destroy()
     Signup()
 
+
+
 class Application(Tk):
     def __init__(self, user):
         Tk.__init__(self)
@@ -226,42 +228,64 @@ class BMI_Page(Frame):
         container = Frame(self)
         container.pack()
 
-        heightlabel = Label(container, text="Height")
+       
+
+        heightlabel = Label(container, text="Height (in m)")
         heightlabel.grid(row=0, column=0)
-        masslabel = Label(container, text="Mass")
+        masslabel = Label(container, text="Mass (in Kg)")
         masslabel.grid(row=1, column=0)
         bp_label = Label(container, text="Blood pressure")
         bp_label.grid(row=2, column=0)
 
-        heightentry = Entry(container)
-        heightentry.grid(row=0, column=1)
-        massentry = Entry(container)
-        massentry.grid(row=1, column=1)
-        bp_entry = Entry(container)
-        bp_entry.grid(row=2, column=1)
+        self.heightentry = Entry(container)
+        self.heightentry.grid(row=0, column=1)
+        self.massentry = Entry(container)
+        self.massentry.grid(row=1, column=1)
+        self.bp_entry = Entry(container)
+        self.bp_entry.grid(row=2, column=1)
 
-        calculate_button = Button(container, text="Calculate now")#, command=lambda : BMI_Calculator(heightentry.get(), massentry.get()))
-        calculate_button.grid(row=3, column=1)
-
-
-        heightVar = IntVar()
-        massVar = IntVar()
-        heightVar = heightentry.get()
-        massVar = massentry.get()
-        BMI = BMI_Calculator(heightVar, massVar)
-        date = datetime.date.today().strftime("%d %b %Y")
-        username = nameEL.get()
-        savefile = format_text(username)
-        write_records(username, BMI, date)
-
-
+        calculate_button = Button(container, text="Calculate now", command=self.calc_n_record_BMI)
+        calculate_button.grid(row=3, column=0)
 
         Menu_Button = Button(container, text="Back to menu", command=lambda : controller.show_frame(Homepage))
-        Menu_Button.grid(row=3, column=1)
-        Records_Button = Button(container, text="Previous records", command=lambda : controller.show_frame(Records))
-        Records_Button.grid(row=4, column=1)
+        Menu_Button.grid(row=4, column=0, columnspan=2)
 
-class Records(Frame):
+        Save_Button = Button(container, text="Save results")#, command=)
+        Save_Button.grid(row=3, column=1)
+
+        Records_Button = Button(container, text="Previous records", command=lambda : controller.show_frame(Records))
+        Records_Button.grid(row=5, column=0, columnspan=2)
+        
+
+
+        self.result = StringVar()
+        resultL = Label(container, textvariable = self.result)
+        resultL.grid(row=5, column=0)
+
+
+    def calc_n_record_BMI(self):
+        h = self.heightentry.get()
+        m = self.massentry.get()
+        BMI = BMI_Calculator(h, m)
+        self.result.set(Defining_Health_Range(BMI))
+        date = datetime.date.today().strftime("%d %b %Y")
+        filename = format_text(nameEL.get())
+        write_records(filename, BMI, date)
+        
+         
+
+    
+#        height = heightentry.get()
+#        mass = massentry.get()
+#        BMI = BMI_Calculator(height, mass)
+#        date = datetime.date.today().strftime("%d %b %Y")
+#        username = nameEL.get()
+#        savefile = format_text(username)
+#        write_records(username, BMI, date)
+
+        
+ 
+class Records(Frame):  
     def __init__(self, parent, controller):
         Frame.__init__(self, parent)
 
@@ -273,14 +297,22 @@ class Records(Frame):
         container = Frame(self)
         container.pack()
 
+
         self.message_var = StringVar()
         message = Label(container, textvariable=self.message_var)
         message.grid(row=0, column=0)
 
+#        username = nameEL.get()
+#        filename = format_text(nameEL.get())
+#        previous_records = read_records(filename)
+
+
+    def read_and_display(self):
         username = nameEL.get()
         filename = format_text(username)
-        previous_records = read_records(filename)
-        self.message_var.set(previous_records)
+        self.message_var.set(read_records)
+
+
 
         BmiButton = Button(self, text="Begin inputting data for BMI", command=lambda : controller.show_frame(BMI_Page))
         BmiButton.pack()
