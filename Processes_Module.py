@@ -1,27 +1,34 @@
 #import Login_New
 import webbrowser
 
-def BMI_Calculator (height, mass):
-    global BMI
-    BMI = float(mass)/float(height)*float(height)
-    print("{:.1f}".format(BMI))
+def BMI_Calculator(height, mass):
+    calculation = (float(mass)/(float(height)*float(height)))
+    BMI = float("{:.1f}".format(calculation))
     return BMI
 
-def Defining_Health_Range (BMI):
+def Defining_Health_Range(BMI):
     fileX = open("BMI.txt", "r")
     
+    text = ""
+
     if BMI < 18.5:
-        print(fileX.readlines()[1])
+        text =  (fileX.readlines()[1])
+        return text
     elif BMI < 25:
-        print(fileX.readlines()[3])
+        text = (fileX.readlines()[3])
+        return text
     elif BMI < 30:
-        print(fileX.readlines()[5])
+        text = (fileX.readlines()[5])
+        return text
     elif BMI < 35:
-        print(fileX.readlines()[7])
+        text = (fileX.readlines()[7])
+        return text
     elif BMI < 40:
-        print(fileX.readlines()[9])
+        text = (fileX.readlines()[9])
+        return text
     elif BMI >= 40:
-        print(fileX.readlines()[11])
+        text = (fileX.readlines()[11])
+        return text
     
     fileX.close
     
@@ -32,7 +39,10 @@ def search_online():
 
 def read_records(filename):
     with open(filename, "r") as records:
-        return records.read()
+        text = records.read()
+        return text
 
-def write_records(username, BMI, Date):
-    record_text = BMI + "\t" + Date
+def write_records(filename, BMI, Date):
+    record_text = "\n" + str(BMI) + "\t" + Date
+    with open(filename, "a") as f:
+        f.write(record_text)
