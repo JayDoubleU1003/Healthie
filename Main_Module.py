@@ -1,38 +1,38 @@
-from Processes_Module import * 
+from Processes_Module import *
 from Login_New import *
 from tkinter import *
 import os
 import datetime
-#import User_Input_Module 
+#import User_Input_Module
 
-usernamelist = r"usernamelist.txt" #"tempfile.temp"  
+usernamelist = r"usernamelist.txt" #"tempfile.temp"
 HEADING = "TimesNewRoman 14 bold"
 SMALL = "150x150"
 NORMAL = "450x400"
 BIG = "800x725"
 
-def Signup():  
-    global pwordE 
+def Signup():
+    global pwordE
     global nameE
     global rootsignup
- 
-    rootsignup = Tk() 
-    rootsignup.title("Sign Up") 
+
+    rootsignup = Tk()
+    rootsignup.title("Sign Up")
     rootsignup.geometry(NORMAL)
-    intruction = Label(rootsignup, text="Please Enter new Username and password\n", font = HEADING) 
-    intruction.place(x=30, y=50) 
- 
-    nameL = Label(rootsignup, text="New Username: ") 
-    pwordL = Label(rootsignup, text="New Password: ") 
-    nameL.place(x=70, y=100) 
-    pwordL.place(x=73, y=125) 
- 
-    nameE = Entry(rootsignup) 
-    pwordE = Entry(rootsignup, show="*") 
-    nameE.place(x=158, y=101) 
-    pwordE.place(x=158, y=126) 
- 
-    signupButton = Button(rootsignup, text="Sign up", command=check_username) 
+    intruction = Label(rootsignup, text="Please Enter new Username and password\n", font = HEADING)
+    intruction.place(x=30, y=50)
+
+    nameL = Label(rootsignup, text="New Username: ")
+    pwordL = Label(rootsignup, text="New Password: ")
+    nameL.place(x=70, y=100)
+    pwordL.place(x=73, y=125)
+
+    nameE = Entry(rootsignup)
+    pwordE = Entry(rootsignup, show="*")
+    nameE.place(x=158, y=101)
+    pwordE.place(x=158, y=126)
+
+    signupButton = Button(rootsignup, text="Sign up", command=check_username)
     signupButton.place(x=158, y=160)
     rootsignup.mainloop()
 
@@ -49,35 +49,35 @@ def check_username():
             error.title("Signup failed")
             usernametakenL = Label(error, text="Username has been taken\n", fg="red")
             usernametakenL.pack()
-                
+
             signupa_B = Button(error, text="Sign up again", command=error.destroy)
             signupa_B.pack()
-                
+
             break
         else:
             continue
-            
+
     if newusername == "" or newpassword == "":
-        signupagain = Tk() #creates a new window when sign up informations are not provided. 
+        signupagain = Tk() #creates a new window when sign up informations are not provided.
         signupagain.title("Signup failed")
         signup_fail = Label(signupagain, text="Please fill in required info\n", fg="red")
         signupagain.geometry(SMALL)
         signup_fail.pack()
-                    
+
         signupa_B = Button(signupagain, text="Sign up again", command=signupagain.destroy)
         signupa_B.pack()
-                    
+
         signupagain.mainloop()
-    
+
     elif create:
         add_new_user(newusername, newpassword)
         usersavefile = format_text(newusername)
         create_save_file(usersavefile)
-        rootsignup.destroy() 
-        Login() 
-    
-        
-    
+        rootsignup.destroy()
+        Login()
+
+
+
 #    except:
 #        newusername = nameE.get()
 #        create_file(usernamelist)
@@ -85,42 +85,42 @@ def check_username():
 #        add_new_user(nameE.get(), pwordE.get())
 #        usersavefile = format_text(newusername)
 #        create_save_file(usersavefile)
-    
+
 
 def Login():
     global nameEL
-    global pwordEL 
+    global pwordEL
     global rootA
 
-    rootA = Tk() 
-    
-    rootA.title("Login") 
+    rootA = Tk()
+
+    rootA.title("Login")
     rootA.geometry(NORMAL)
-    intruction = Label(rootA, text="Please Login\n", font=HEADING) 
+    intruction = Label(rootA, text="Please Login\n", font=HEADING)
     intruction.pack(side=TOP)
     frame1 = Frame(rootA)
-    frame1.pack() 
- 
-    nameL = Label(frame1, text="Username: ") 
-    pwordL = Label(frame1, text="Password: ") 
+    frame1.pack()
+
+    nameL = Label(frame1, text="Username: ")
+    pwordL = Label(frame1, text="Password: ")
     nameL.grid(row=0, column=0, sticky=E)
     pwordL.grid(row=1, column=0, sticky=E)
- 
-    nameEL = Entry(frame1) 
+
+    nameEL = Entry(frame1)
     pwordEL = Entry(frame1, show="*")
     nameEL.grid(row=0, column=1, sticky=W)
     pwordEL.grid(row=1, column=1, sticky=W)
-    
-    loginB = Button(rootA, text="Login", command=to_CheckLogin) 
+
+    loginB = Button(rootA, text="Login", command=to_CheckLogin)
     loginB.pack()
- 
+
     newsignup = Button(rootA, text="Create new user account", command=New_Signup)
     newsignup.pack()
-    
-#    rmuser = Button(rootA, text = "Delete User", fg = "red")#, command = DelUser) 
+
+#    rmuser = Button(rootA, text = "Delete User", fg = "red")#, command = DelUser)
 #    rmuser.grid(row=5, columnspan=2, sticky=W)
-    
-    
+
+
     rootA.mainloop()
 
 def to_CheckLogin():
@@ -135,20 +135,20 @@ def CheckLogin(nameEL, pwordEL):
     global r
 
     authorized = login(nameEL, pwordEL)
-    username = nameEL  
+    username = nameEL
 
     if authorized:
         to_application(username)
-        
-#            r = Tk() 
+
+#            r = Tk()
 #            r.title("XD")
-#            r.geometry(SMALL) 
-#            rlbl = Label(r, text = "\n[+] Logged In") 
+#            r.geometry(SMALL)
+#            rlbl = Label(r, text = "\n[+] Logged In")
 #            rlbl.pack()
-#            continue_Button = Button(r, text = "Continue into app", command = to_application)#, command = Processes_Module.Main_window) 
+#            continue_Button = Button(r, text = "Continue into app", command = to_application)#, command = Processes_Module.Main_window)
 #            continue_Button.pack()
 #            r.mainloop()
-        
+
     else:
         rootA.destroy()
         r = Tk()
@@ -192,13 +192,13 @@ class Application(Tk):
             frame.place(x=0, y=0, relheight=1, relwidth=1)
         self.show_frame(Homepage)
 
-        
+
     def show_frame(self, cont):
         frame = self.frames[cont]
         frame.tkraise()
-  
-        
-class Homepage(Frame):  
+
+
+class Homepage(Frame):
     def __init__(self, parent, controller):
         Frame.__init__(self, parent)
 
@@ -208,10 +208,11 @@ class Homepage(Frame):
         welcome_text = "Welcome \"" + nameEL.get() + "\""
 
         heading1 = Label(self, text=welcome_text, font=HEADING)
-        heading1.pack() 
-        
+        heading1.pack()
+
         BmiButton = Button(self, text="Begin inputting data for BMI and blood pressure", command=lambda : controller.show_frame(BMI_Page))
         BmiButton.pack()
+
         RecordsButton = Button(self, text="Previous records", command=lambda : controller.show_frame(Records))
         RecordsButton.pack()
 
@@ -219,16 +220,14 @@ class Homepage(Frame):
 class BMI_Page(Frame):
     def __init__(self, parent, controller):
         Frame.__init__(self, parent)
-        
+
         self.controller = controller
-        
+
         heading = Label(self, text="BMI & Blood pressure", font=HEADING)
         heading.pack()
-        
+
         container = Frame(self)
         container.pack()
-
-       
 
         heightlabel = Label(container, text="Height (in m)")
         heightlabel.grid(row=0, column=0)
@@ -255,37 +254,21 @@ class BMI_Page(Frame):
 
         Records_Button = Button(container, text="Previous records", command=lambda : controller.show_frame(Records))
         Records_Button.grid(row=5, column=0, columnspan=2)
-        
 
-
-        self.result = StringVar()
-        resultL = Label(container, textvariable = self.result)
-        resultL.grid(row=5, column=0)
-
+        self.results = Label(container, text="")
+        self.results.grid(row=6, column=0, columnspan=2)
 
     def calc_n_record_BMI(self):
         h = self.heightentry.get()
         m = self.massentry.get()
         BMI = BMI_Calculator(h, m)
-        self.result.set(Defining_Health_Range(BMI))
-        date = datetime.date.today().strftime("%d %b %Y")
-        filename = format_text(nameEL.get())
-        write_records(filename, BMI, date)
-        
-         
+        print(BMI)
+        self.results["text"] = Defining_Health_Range(BMI)
+        # date = datetime.date.today().strftime("%d %b %Y")
+        # filename = format_text(nameEL.get())
+        # write_records(filename, BMI, date)
 
-    
-#        height = heightentry.get()
-#        mass = massentry.get()
-#        BMI = BMI_Calculator(height, mass)
-#        date = datetime.date.today().strftime("%d %b %Y")
-#        username = nameEL.get()
-#        savefile = format_text(username)
-#        write_records(username, BMI, date)
-
-        
- 
-class Records(Frame):  
+class Records(Frame):
     def __init__(self, parent, controller):
         Frame.__init__(self, parent)
 
@@ -319,24 +302,13 @@ class Records(Frame):
         MenuButton = Button(self, text="Back to menu", command=lambda : controller.show_frame(Homepage))
         MenuButton.pack()
 
-        
-
-
-
-
-
-        
-
-
-        
-
 
 
 try:
     check_file(usernamelist)
-    Login()   
+    Login()
 except:
     create_file(usernamelist)
     Signup()
-    
+
 #Processes_Module.Main_window()
