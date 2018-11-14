@@ -93,6 +93,7 @@ def Login():
 
     rootA = Tk() 
     
+
     rootA.title("Login") 
     rootA.geometry(NORMAL)
     intruction = Label(rootA, text="Please Login\n", font=HEADING) 
@@ -175,6 +176,7 @@ def Application(username):
     global Rpage
     
     Application = Tk()
+    Application.withdraw()
     user = username
 
     Homepage = Toplevel(Application)
@@ -244,12 +246,15 @@ def Application(username):
 
 ########################################################################################################################
 
-    RPage = Toplevel(Application)
+    Rpage = Toplevel(Application)
 
-    heading = Label(text="Your previous records", font=HEADING)
+    Rpage.title("Healthie")
+    Rpage.geometry(NORMAL)
+    
+    heading = Label(Rpage, text="Your previous records", font=HEADING)
     heading.pack()
 
-    Rcontainer = Frame(RPage)
+    Rcontainer = Frame(Rpage)
     Rcontainer.pack()
 
 
