@@ -8,7 +8,7 @@ import datetime
 usernamelist = r"usernamelist.txt" #"tempfile.temp"  
 HEADING = "TimesNewRoman 14 bold"
 SMALL = "150x150+450+250"
-NORMAL = "450x400+450+250"
+NORMAL = "500x400+450+250"
 
 def Signup():  
     global pwordE 
@@ -183,15 +183,15 @@ def Application(username):
 
     Homepage.title("Healthie")
     Homepage.geometry(NORMAL)
-
-    Hcontainer = Frame(Homepage)
-    Hcontainer.pack()
-
+    
     welcome_text = "Welcome \"" + user + "\""
 
     heading1 = Label(Homepage, text=welcome_text, font=HEADING)
     heading1.pack()
-
+    
+    Hcontainer = Frame(Homepage)
+    Hcontainer.pack()
+    
     BmiButton = Button(Hcontainer, text="Begin inputting data for BMI and blood pressure", command=to_BMI_Page)
     BmiButton.grid()
     RecordsButton = Button(Hcontainer, text="Previous records", command=to_Records_Page)
@@ -231,19 +231,19 @@ def Application(username):
     calculate_button = Button(Bcontainer, text="Calculate now", command=calc_n_show_BMI)
     calculate_button.grid(row=4, column=0)
 
-    Menu_Button = Button(Bcontainer, text="Back to menu", command=to_Homepage)
-    Menu_Button.grid(row=5, column=0, columnspan=2)
-
     Save_Button = Button(Bcontainer, text="Save results")#, command=)
     Save_Button.grid(row=4, column=1)
 
+    Menu_Button = Button(Bcontainer, text="Back to menu", command=to_Homepage)
+    Menu_Button.grid(row=6, column=0, columnspan=2)
+
     Records_Button = Button(Bcontainer, text="Previous records", command=to_Records_Page)
-    Records_Button.grid(row=6, column=0, columnspan=2)
+    Records_Button.grid(row=7, column=0, columnspan=2)
 
     result = StringVar()
     resultL = Label(Bcontainer, textvariable = result)
     resultL.grid(row=5, column=0)
-
+    
 ########################################################################################################################
 
     Rpage = Toplevel(Application)
@@ -262,8 +262,8 @@ def Application(username):
     filename = format_text(user)
     previous_records = read_records(filename)
     results["text"] = previous_records
-#    show_record_B = Button(self, text="Show previous records", command=self.to_display_record)
-#    show_record_B.pack()
+    results.pack()
+
     BmiButton = Button(Rcontainer, text="Begin inputting data for BMI", command=to_BMI_Page)
     BmiButton.pack()
     MenuButton = Button(Rcontainer, text="Back to menu", command=to_Homepage)
@@ -272,16 +272,14 @@ def Application(username):
 
     Application.mainloop()
 
-    
-
-
-
 def calc_n_show_BMI():
     h = heightentry.get()
     m = massentry.get()
     BMI = BMI_Calculator(h, m)
     text ="Your BMI is " + BMI + "" + Defining_Health_Range(BMI)
-    result.set(text)
+    result.set(text)    
+   
+def record_data():   
     date = datetime.date.today().strftime("%d %b %Y")
     username = nameEL.get()
     filename = format_text(username)
@@ -294,7 +292,8 @@ def to_BMI_Page():
     Bpage.lift()
 
 def to_Records_Page():
-    Rpage.lift()        
+    Rpage.lift()
+
 
     
 #        height = heightentry.get()
@@ -342,3 +341,4 @@ try:
 except:
     create_file(usernamelist)
     Signup()
+
