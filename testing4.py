@@ -231,11 +231,8 @@ def Application(username):
     dbp_entry.grid(row=3, column=1)
     
 
-    calculate_button = Button(Bcontainer, text="Calculate now", command = lambda : calc_n_show_BMI(heightentry, massentry, calc_resultL))
+    calculate_button = Button(Bcontainer, text="Calculate now", command = lambda : calc_n_show_BMI(user, heightentry, massentry, calc_resultL, sbp_entry, dbp_entry))
     calculate_button.grid(row=4, column=0) 
-
-    Save_Button = Button(Bcontainer, text="Save results")#, command=)
-    Save_Button.grid(row=4, column=1)
 
 
     calc_resultL = Label(Bcontainer, text="")
@@ -252,8 +249,7 @@ def Application(username):
     QuitButton = Button(Bcontainer, text="Quit Program", command=lambda : quit_application(App))
     QuitButton.grid(row=8, column=0, columnspan=2)
 
-    
-    
+        
 ########################################################################################################################
 
     Rpage = Toplevel(App)
@@ -284,14 +280,17 @@ def Application(username):
 
     App.mainloop()
 
-def calc_n_show_BMI(heightentry, massentry, calc_resultL):
+def calc_n_show_BMI(user, heightentry, massentry, calc_resultL, sbp_entry, dbp_entry):
     h = heightentry.get()
     m = massentry.get()
+    SBP = sbp_entry.get()
+    DBP = dbp_entry.get()
     line = calc_resultL
     BMI = BMI_Calculator(h, m)
-    show_BMI(BMI, line)
 
-    
+    show_BMI(BMI, line)
+    record_data(user, BMI, SBP, DBP)
+ 
 
 def show_BMI(BMI, calc_resultL):
     text = "Your BMI is " + str(BMI) + " " + Defining_Health_Range(BMI)
@@ -305,11 +304,10 @@ def show_BMI(BMI, calc_resultL):
     textY = " ".join(textX) 
     calc_resultL["text"] = textY
    
-def record_data():   
+def record_data(username, BMI, SBP, DBP):   
     date = datetime.date.today().strftime("%d %b %Y")
-    username = nameEL.get()
     filename = format_text(username)
-    write_records(filename, BMI, date)
+    write_records(filename, BMI, date, SBP, DBP)
         
 def to_Homepage():
     Homepage.lift()
@@ -372,3 +370,4 @@ try:
 except:
     create_file(usernamelist)
     Signup()
+
