@@ -1,5 +1,4 @@
 import os
-import Processes_Module
  
 usernamelist = r"usernamelist.txt" #"tempfile.temp"  
 
@@ -11,7 +10,7 @@ def create_file(file_name):
 
 
 def create_save_file(file_name):
-        first_line = "BMI" + "\t" + "Blood Pressure" + "\t" + "Date"
+        first_line = "|\tBMI\t\t" + "||Blood Pressure(SBP, DBP)\t\t||" + "\t" + "Date\t\t|"
 
         try :
                 check_file(file_name)
