@@ -1,16 +1,16 @@
 import os
  
-usernamelist = r"usernamelist.txt" #"tempfile.temp"  
+usernamelist = r"usernamelist.txt"   
 
 
  
-def create_file(file_name):
+def create_file(file_name):    
     with open(file_name, "w") as f:
         f.write("[]")
 
 
-def create_save_file(file_name):
-        first_line = "|\tBMI\t\t" + "||Blood Pressure(SBP, DBP)\t\t||" + "\t" + "Date\t\t|"
+def create_save_file(file_name):        #creates folder for user save files
+        first_line = "| BMI\t||   Blood Pressure(SBP, DBP)   ||\tDate\t\t\t\t    |"
 
         try :
                 check_file(file_name)
@@ -28,12 +28,12 @@ def create_save_file(file_name):
 
 
 
-def check_file(file_name):
+def check_file(file_name): #checks whether file is available or not
     with open(file_name, "r") as pull_file:
         f = eval(pull_file.read())
     return f
 
-def add_new_user(newusername, newpassword):
+def add_new_user(newusername, newpassword):     #adds new user details into record
     new_account = {"Username": newusername, "Password": newpassword}
     existing_accounts = check_file(usernamelist)
 
@@ -42,11 +42,11 @@ def add_new_user(newusername, newpassword):
     with open(usernamelist, "w") as f:
         f.write("{}".format(existing_accounts))
 
-def format_text(username):
+def format_text(username):      #formats username into save file name
         f = r"accounts\\" + username + ".txt"
         return f
 
-def login(entry_username, entry_password):
+def login(entry_username, entry_password):      #checks login information 
     authorized = False
     existing_accounts = check_file(usernamelist)
 
@@ -61,13 +61,3 @@ def login(entry_username, entry_password):
             continue
 
     return authorized
- 
-#def DelUser():
-#    os.remove(creds) 
-#    rootA.destroy() 
-#    Signup() 
- 
-#if os.path.isfile(creds):
-#    Login()
-#else: # This if else statement checks to see if the file exists. If it does it will go to Login, if not it will go to Signup :)
-#    Signup()"
