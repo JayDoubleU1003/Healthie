@@ -1,15 +1,16 @@
 from Processes_Module import * 
-from Login_New import *
+from Login_Module import *
 from tkinter import *
 import os
 import datetime
-#import User_Input_Module 
 
-usernamelist = r"usernamelist.txt" #"tempfile.temp"  
+#the followings are some fixed value that would be used by the GUI
+usernamelist = r"usernamelist.txt"  
 HEADING = "TimesNewRoman 14 bold"
 SMALL = "150x150+450+250"
-NORMAL = "500x400+450+250"
+NORMAL = "525x400+450+250"
 
+#the following code creates a signup window
 def Signup():  
     global pwordE 
     global nameE
@@ -35,14 +36,15 @@ def Signup():
     signupButton.place(x=158, y=160)
     rootsignup.mainloop()
 
+#the function checks the entries before creating a new account
 def check_username():
-    newusername = nameE.get()
+    newusername = nameE.get()  
     newpassword = pwordE.get()
     existing_accounts = check_file(usernamelist)
     create = True
 
-    for account in existing_accounts:
-        if newusername == account["Username"]:
+    for account in existing_accounts: 
+        if newusername == account["Username"]:  #checks availability of username
             create = False
             error = Tk()
             error.title("Signup failed")
@@ -56,8 +58,8 @@ def check_username():
         else:
             continue
             
-    if newusername == "" or newpassword == "":
-        signupagain = Tk() #creates a new window when sign up informations are not provided. 
+    if newusername == "" or newpassword == "":  
+        signupagain = Tk()  
         signupagain.title("Signup failed")
         signup_fail = Label(signupagain, text="Please fill in required info\n", fg="red")
         signupagain.geometry(SMALL)
@@ -74,19 +76,9 @@ def check_username():
         create_save_file(usersavefile)
         rootsignup.destroy() 
         Login() 
-    
-        
-    
-#    except:
-#        newusername = nameE.get()
-#        create_file(usernamelist)
-#        create_file(format_text)
-#        add_new_user(nameE.get(), pwordE.get())
-#        usersavefile = format_text(newusername)
-#        create_save_file(usersavefile)
-    
 
-def Login():
+
+def Login():    #creates login page
     global nameEL
     global pwordEL 
     global rootA
@@ -117,37 +109,21 @@ def Login():
     newsignup = Button(rootA, text="Create new user account", command=New_Signup)
     newsignup.pack()
     
-#    rmuser = Button(rootA, text = "Delete User", fg = "red")#, command = DelUser) 
-#    rmuser.grid(row=5, columnspan=2, sticky=W)
-    
-    
     rootA.mainloop()
 
 def to_CheckLogin():
     CheckLogin(nameEL.get(), pwordEL.get())
 
 def to_application(username):
-#    r.destroy()
-#    username = nameEL.get()
     Application(username)
 
 def CheckLogin(nameEL, pwordEL):
-    global r
 
-    authorized = login(nameEL, pwordEL)
+    authorized = login(nameEL, pwordEL) #checks login info given
     username = nameEL  
 
     if authorized:
         to_application(username)
-        
-#            r = Tk() 
-#            r.title("XD")
-#            r.geometry(SMALL) 
-#            rlbl = Label(r, text = "\n[+] Logged In") 
-#            rlbl.pack()
-#            continue_Button = Button(r, text = "Continue into app", command = to_application)#, command = Processes_Module.Main_window) 
-#            continue_Button.pack()
-#            r.mainloop()
         
     else:
         rootA.destroy()
@@ -156,27 +132,28 @@ def CheckLogin(nameEL, pwordEL):
         r.geometry(SMALL)
         rlbl = Label(r, text="\n[!] Invalid Login")
         rlbl.pack()
-        loginButton = Button(r, text = "Login again", command = Login_again)
+        loginButton = Button(r, text = "Login again", command = lambda:Login_again(r))
         loginButton.pack()
         r.mainloop()
 
-def Login_again():
+def Login_again(r):
     r.destroy()
     Login()
-
 
 
 def New_Signup():
     rootA.destroy()
     Signup()
 
+
+#the following function for the application which consists of 3 separate pages. 
 def Application(username):
     global Homepage
     global Bpage
     global Rpage
     
     App = Tk()
-    App.withdraw()
+    App.withdraw() #hides the main window
     user = username
 
     Homepage = Toplevel(App)
@@ -199,7 +176,7 @@ def Application(username):
     QuitButton = Button(Hcontainer, text="Quit Program", command=lambda : quit_application(App))
     QuitButton.grid()
 
-########################################################################################################################
+###########################################page separator###########################################################################
     
     Bpage = Toplevel(App) 
 
@@ -218,7 +195,7 @@ def Application(username):
     masslabel.grid(row=1, column=0)
     sbp_label = Label(Bcontainer, text="Blood pressure(Systolic)")
     sbp_label.grid(row=2, column=0)
-    dbp_label = Label(Bcontainer, text="Blood pressure(Diastolic")
+    dbp_label = Label(Bcontainer, text="Blood pressure(Diastolic)")
     dbp_label.grid(row=3, column=0)
 
     heightentry = Entry(Bcontainer)
@@ -250,7 +227,7 @@ def Application(username):
     QuitButton.grid(row=8, column=0, columnspan=2)
 
         
-########################################################################################################################
+###########################################page separator###########################################################################
 
     Rpage = Toplevel(App)
 
@@ -263,12 +240,21 @@ def Application(username):
     Rcontainer = Frame(Rpage)
     Rcontainer.pack()
 
+    Rcontainer2 = Frame(Rpage, height=290, width=472)
+    Rcontainer2.pack()
+    Rcontainer2.pack_propagate(False)
 
-    results = Label(Rcontainer, text="")
+    resultscroll = Scrollbar(Rcontainer2)
+    resultscroll.pack(side=RIGHT, fill=Y)
+
+    results = Text(Rcontainer2, yscrollcommand=resultscroll.set)
     filename = format_text(user)
     previous_records = read_records(filename)
-    results["text"] = previous_records
+    results.insert(INSERT, previous_records)
+    results.configure(state="disabled")
     results.pack()
+
+    resultscroll.config(command=results.yview)
 
     BmiButton = Button(Rcontainer, text="Begin inputting data for BMI", command=to_BMI_Page)
     BmiButton.pack()
@@ -280,19 +266,31 @@ def Application(username):
 
     App.mainloop()
 
-def calc_n_show_BMI(user, heightentry, massentry, calc_resultL, sbp_entry, dbp_entry):
+def calc_n_show_BMI(user, heightentry, massentry, calc_resultL, sbp_entry, dbp_entry):  #calculates BMI and shows on the application
     h = heightentry.get()
     m = massentry.get()
     SBP = sbp_entry.get()
     DBP = dbp_entry.get()
     line = calc_resultL
     BMI = BMI_Calculator(h, m)
-
+    if BMI <= 18 or BMI >= 25:
+        Search_Button(BMI)
+    else:
+        remove_searchB()            
     show_BMI(BMI, line)
     record_data(user, BMI, SBP, DBP)
- 
 
-def show_BMI(BMI, calc_resultL):
+def remove_searchB():
+    search_B.place_forget()
+
+
+def Search_Button(BMI): 
+    global search_B
+    search_B = Button(Bpage, text="Search online for solutions", command=lambda:search_online(BMI))
+    search_B.place(x=285, y=112)
+
+
+def show_BMI(BMI, calc_resultL):    #formats the BMI result with a feedback string
     text = "Your BMI is " + str(BMI) + " " + Defining_Health_Range(BMI)
     textX = text.split(" ")
     for i in range(1, len(textX)):
@@ -304,7 +302,7 @@ def show_BMI(BMI, calc_resultL):
     textY = " ".join(textX) 
     calc_resultL["text"] = textY
    
-def record_data(username, BMI, SBP, DBP):   
+def record_data(username, BMI, SBP, DBP):   #writes formatted data into text file
     date = datetime.date.today().strftime("%d %b %Y")
     filename = format_text(username)
     write_records(filename, BMI, date, SBP, DBP)
@@ -320,48 +318,9 @@ def to_Records_Page():
 
 def quit_application(App):
     App.update()
-    App.deiconify()
-    App.destroy()
+    App.deiconify() #reveals the hidden window before destroying it
+    App.destroy() 
     rootA.destroy()
-
-    
-#        height = heightentry.get()
-#        mass = massentry.get()
-#        BMI = BMI_Calculator(height, mass)
-#        date = datetime.date.today().strftime("%d %b %Y")
-#        username = nameEL.get()
-#        savefile = format_text(username)
-#        write_records(username, BMI, date)
-
-        
-
-
-    
-
-
-
-
-
-    
-
-
-
-        
-
-#    def read_and_display(self):
-#        username = nameEL.get()
-#        filename = format_text(username)
-#        self.message_var.set(read_records)  
-
-
-
-
-
-        
-
-
-        
-
 
 
 try:
