@@ -322,11 +322,28 @@ def quit_application(App):
     App.destroy() 
     rootA.destroy()
 
+def write_BMI_file():   #writes the "BMI.txt" file 
+    with open("BMI.txt", "w") as f:
+        f.write("""if bodymassindex < 18.5:
+Sadly, you're underweight, try changing your diet increase your calorie intake. 
+elif bodymassindex < 25:
+Yayy! Your body mass is in the normal range! Stay fit and keep it up!
+elif bodymassindex < 30:
+Hmmm, you're considered overweight, more hard work and try to lower the weight bruh!
+elif bodymassindex < 35:
+You're Class 1 obese, control your diet!
+elif bodymassindex < 40:
+You're Class 2 obese, control your diet!
+elif bodymassindex >= 40:
+You're Class 3 obese, control your diet!        
+""")
+
 
 try:
     check_file(usernamelist)
     Login()   
 except:
     create_file(usernamelist)
+    write_BMI_file()
     Signup()
 
